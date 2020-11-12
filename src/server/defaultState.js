@@ -29,7 +29,7 @@ export const defaultState = {
     },
     {
         name: "Finish cart",
-        id: "T2",
+        id: "T3",
         group: "G2",
         owner: "U1",
         isComplete: false
