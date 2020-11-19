@@ -1,16 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { connectDB, connectDb } from './connect-db';
+import { connectDB } from './connect-db';
 
 let port = 7777;
 let app = express();
 
 app.listen(port, console.log("Server listening on port", port));
 
-// app.get('/', (req, res) => {
-//     res.send("Hello world!!!");
-// });
+app.get('/', (req, res) => {
+    res.send(`Running on port ${port}`);
+});
 
 app.use(
     cors(),
@@ -45,8 +45,8 @@ export const updateTask = async (task) => {
     }
 };
 
-app.post('task/update', async (req, res) => {
+app.post('/task/update', async (req, res) => {
     let task = req.body.task;
     await updateTask(task);
-    res.statusCode(200).send();
+    res.status(200).send();
 });
