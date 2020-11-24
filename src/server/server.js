@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { connectDB } from './connect-db';
+import './initialize-db';
+import { authenticationRoute } from './authenticate'
 
 let port = 7777;
 let app = express();
@@ -17,6 +19,8 @@ app.use(
     bodyParser.urlencoded({ extended: true }),
     bodyParser.json()
 );
+
+authenticationRoute(app);
 
 export const addNewTask = async (task) => {
     let db = await connectDB();
@@ -35,13 +39,13 @@ export const updateTask = async (task) => {
     let db = await connectDB();
     let collection = db.collection('tasks');
     if (group) {
-        await collection.updateOne({id}, {$set:{group}});
+        await collection.updateOne({ id }, { $set: { group } });
     }
     if (name) {
-        await collection.updateOne({id}, {$set:{name}});
+        await collection.updateOne({ id }, { $set: { name } });
     }
     if (isComplete !== undefined) {
-        await collection.updateOne({id}, {$set:{isComplete}});
+        await collection.updateOne({ id }, { $set: { isComplete } });
     }
 };
 

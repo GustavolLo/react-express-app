@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 export const Navigation = () => (
     <div>
         <Link to="/dashboard">
-            <h1>
-                My Application
-            </h1>
+            <h1>My Application</h1>
         </Link>
     </div>
 );

@@ -13,7 +13,7 @@ export function* taskCreationSaga() {
         const taskID = uuid();
         yield put(mutations.createTask(taskID, groupID, ownerID));
         const { res } = yield axios.post(url + '/task/new', {
-            task : {
+            task: {
                 id: taskID,
                 group: groupID,
                 owner: ownerID,
@@ -32,7 +32,7 @@ export function* taskModificationSaga() {
             mutations.SET_TASK_COMPLETE
         ]);
         yield axios.post(url + '/task/update', {
-            task : {
+            task: {
                 id: task.taskID,
                 group: task.groupID,
                 isComplete: task.isComplete,
@@ -41,3 +41,27 @@ export function* taskModificationSaga() {
         });
     }
 }
+
+export function* userAuthenticationSaga() {
+    while (true) {
+        const { username, password } = yield take(mutations.REQUEST_AUTHENTICATE_USER);
+        try {
+            const { data } = yield axios.post(url + '/authenticate', {
+                username,
+                password
+            });
+            if (!data) {
+                throw new Error();
+            }
+            console.log("Authenticated!", data);
+            
+            yield put(mutations.setState(data.state));
+            yield put(mutations.processAuthenticateUser(mutations.AUTHENTICATED));
+            
+        } catch (e) {
+            console.log(e);
+            console.log("Can't authenticate.");
+            yield put(mutations.processAuthenticateUser(mutations.NOT_AUTHENTICATED));
+        }
+    };
+};
